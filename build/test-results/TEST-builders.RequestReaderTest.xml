@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="builders.RequestReaderTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2015-12-18T21:34:47" hostname="Brians-MacBook-Pro.local" time="0.001">
+  <properties/>
+  <testcase name="testReadsARequestWithABodyGivenTheContentLength" classname="builders.RequestReaderTest" time="0.0"/>
+  <testcase name="testReadsStatusLine" classname="builders.RequestReaderTest" time="0.0"/>
+  <testcase name="testReadsInputWithHeaders" classname="builders.RequestReaderTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

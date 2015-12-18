@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="builders.RequestParserTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2015-12-18T21:34:47" hostname="Brians-MacBook-Pro.local" time="0.003">
+  <properties/>
+  <testcase name="testProcessesBodyDataIfHasContentLengthHeader" classname="builders.RequestParserTest" time="0.001"/>
+  <testcase name="testBuildsRequestLine" classname="builders.RequestParserTest" time="0.0"/>
+  <testcase name="testProcessesMultipleHeaders" classname="builders.RequestParserTest" time="0.0"/>
+  <testcase name="testProcessesAHeaderLine" classname="builders.RequestParserTest" time="0.0"/>
+  <testcase name="testWithHeaderWith3Components" classname="builders.RequestParserTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -82,7 +82,7 @@ public class ApplicationControllerTest {
     }
 
     @Test
-    public void test() throws IOException, URISyntaxException {
+    public void testPutMethodNotAllowed() throws IOException, URISyntaxException {
         FileHandler app = new FileHandler();
         Request request = new Request("PUT", new URI("/file1"), "HTTP/1.1");
 

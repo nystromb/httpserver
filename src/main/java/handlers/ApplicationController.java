@@ -11,23 +11,26 @@ public abstract class ApplicationController implements RequestHandler {
     @Override
     public Response handle(Request request) throws IOException {
 
-        switch (RequestMethods.valueOf(request.getMethod())) {
-            case GET:
+        switch (request.getMethod()) {
+            case "GET":
                 response = get(request);
                 break;
-            case POST:
+            case "HEAD":
+                response = head(request);
+                break;
+            case "POST":
                 response = post(request);
                 break;
-            case PUT:
+            case "PUT":
                 response = put(request);
                 break;
-            case DELETE:
+            case "DELETE":
                 response = delete(request);
                 break;
-            case OPTIONS:
+            case "OPTIONS":
                 response = options(request);
                 break;
-            case PATCH:
+            case "PATCH":
                 response = patch(request);
                 break;
         }
@@ -36,6 +39,10 @@ public abstract class ApplicationController implements RequestHandler {
     }
 
     protected Response get(Request request) throws IOException {
+        return response;
+    }
+
+    private Response head(Request request) {
         return response;
     }
 
@@ -58,5 +65,4 @@ public abstract class ApplicationController implements RequestHandler {
     protected Response patch(Request request) throws IOException {
         return response;
     }
-
 }
