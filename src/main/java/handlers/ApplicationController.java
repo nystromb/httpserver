@@ -6,7 +6,7 @@ import builders.Response;
 import java.io.IOException;
 
 public abstract class ApplicationController implements RequestHandler {
-    private Response response = new Response.Builder(405, "Method Not Allowed").build();
+    protected Response response = new Response.Builder(405, "Method Not Allowed").build();
 
     @Override
     public Response handle(Request request) throws IOException {
