@@ -20,14 +20,6 @@ public class FileHandler extends ApplicationController {
             String ranges = request.getHeader("Range").split("=")[1];
             String[] range = ranges.split("-");
 
-//            String contents = String.valueOf(Files.readAllBytes(new File(Settings.PUBLIC_DIR, request.getPath()).toPath()));
-//            if(ranges.startsWith("-")){
-//                response.setBody(contents.substring(contents.length() - Integer.parseInt(range[1])));
-//            }else if (ranges.endsWith("-")){
-//                response.setBody(contents.substring(Integer.parseInt(range[0])));
-//            }else {
-//                response.setBody(contents.substring(Integer.parseInt(range[0]), (Integer.parseInt(range[1]) + 1)));
-//            }
             String contents = FileUtil.readFileContents(new File(Settings.PUBLIC_DIR, request.getPath()));
             if(ranges.startsWith("-")){
                 response.setBody(contents.substring(contents.length() - Integer.parseInt(range[1])));
