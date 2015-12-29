@@ -42,7 +42,7 @@ public abstract class ApplicationController implements RequestHandler {
         return response;
     }
 
-    private Response head(Request request) {
+    protected Response head(Request request) {
         return response;
     }
 
