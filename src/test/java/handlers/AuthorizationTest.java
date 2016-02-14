@@ -18,7 +18,7 @@ public class AuthorizationTest {
     Authorization handler = new Authorization("admin", "hunter2", "secretKey", new MockController());
 
     @Before
-    public void setUp(){
+    public void setUp() {
 
     }
 

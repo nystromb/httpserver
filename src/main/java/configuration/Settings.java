@@ -18,7 +18,7 @@ public class Settings {
         }
     }
 
-    public static void setUpLogger(){
+    public static void setUpLogger() {
         LoggerConfig.setUpLogger();
     }
 }

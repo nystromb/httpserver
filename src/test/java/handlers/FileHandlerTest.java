@@ -3,7 +3,6 @@ package handlers;
 import builders.Request;
 import builders.Response;
 import configuration.Settings;
-import handlers.FileHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,12 +22,12 @@ public class FileHandlerTest {
     FileHandler handler = new FileHandler();
     File publicDir = new File(System.getProperty("user.dir"), "/public/");
     @Before
-    public void setUp(){
+    public void setUp() {
         publicDir.mkdir();
     }
 
     private void createIfNotExists(String path, String contents) throws IOException {
-        if(Files.notExists(new File(Settings.PUBLIC_DIR, path).toPath())){
+        if (Files.notExists(new File(Settings.PUBLIC_DIR, path).toPath())) {
             Path file = Files.createFile(new File(Settings.PUBLIC_DIR, path).toPath());
             BufferedWriter writer = new BufferedWriter(new FileWriter(file.toFile()));
             writer.write(contents);
@@ -38,7 +37,7 @@ public class FileHandlerTest {
 
     @After
     public void shutDown() throws IOException {
-        for(File file : publicDir.listFiles()){
+        for (File file : publicDir.listFiles()) {
             Files.delete(file.toPath());
         }
         Files.deleteIfExists(publicDir.toPath());

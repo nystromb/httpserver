@@ -11,8 +11,8 @@ public class Router {
     }
 
     public static Route getRoute(String path) {
-        for(Route route : routes){
-            if(route.match(path))
+        for (Route route : routes) {
+            if (route.match(path))
                 return route;
         }
 

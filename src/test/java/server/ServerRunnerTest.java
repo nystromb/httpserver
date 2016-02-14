@@ -41,7 +41,7 @@ public class ServerRunnerTest {
     }
 
     @After
-    public void shutDown(){
+    public void shutDown() {
         Router.clearAll();
     }
 

@@ -11,12 +11,12 @@ import static org.junit.Assert.assertTrue;
 
 public class ResponseTest {
     @Before
-    public void setUp(){
+    public void setUp() {
 
     }
 
     @Test
-    public void testBuildsResponseFromStatusLine() throws IOException{
+    public void testBuildsResponseFromStatusLine() throws IOException {
         Response response = new Response.Builder(200).build();
 
         assertEquals("HTTP/1.1 200 OK\r\n\r\n", new String(response.toByteArray()));
