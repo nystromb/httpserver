@@ -16,7 +16,7 @@ public class HttpServer {
     }
 
     public void start() throws IOException {
-        while(true) {
+        while (true) {
             client = server.accept();
             executorService.execute(new ServerRunner(client));
         }

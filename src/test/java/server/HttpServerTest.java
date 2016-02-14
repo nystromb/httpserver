@@ -9,7 +9,7 @@ public class HttpServerTest {
     HttpServer server;
 
     @Before
-    public void setUp() throws IOException{
+    public void setUp() throws IOException {
         server = new HttpServer(port);
     }
 

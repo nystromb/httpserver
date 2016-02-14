@@ -12,7 +12,7 @@ public class DirectoryHandler extends ApplicationController {
     @Override
     protected Response get(Request request) throws IOException {
         String contents = "<!DOCTYPE html><html><head></head><body><ul>";
-        for(String file : new File(Settings.PUBLIC_DIR, request.getPath()).list()){
+        for (String file : new File(Settings.PUBLIC_DIR, request.getPath()).list()) {
             contents += "<li><a href=\"/" + file +"\">" + file + "</a></li>";
         }
         contents += "</ul></body>";

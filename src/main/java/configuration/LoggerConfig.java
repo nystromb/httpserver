@@ -10,15 +10,15 @@ import java.util.logging.Logger;
 public class LoggerConfig {
     private static final Logger logger = Logger.getLogger( "http.log" );
 
-    public static void setUpLogger(){
+    public static void setUpLogger() {
         try {
             File logs = new File(System.getProperty("user.dir"), "/logs/");
-            if(Files.notExists(logs.toPath())){
+            if (Files.notExists(logs.toPath())) {
                 logs.mkdir();
             }
             FileHandler fileHandler = new FileHandler(new File(logs.toString(), "logfile.txt").toString(), true);
             logger.addHandler(fileHandler);
-        }catch(IOException e){
+        }catch(IOException e) {
             e.printStackTrace();
             logger.log(Level.SEVERE, "Couldn't set up logging");
         }

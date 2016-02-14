@@ -7,14 +7,14 @@ public class RequestParser {
     static Request request;
 
     public static Request process(String rawRequest) throws URISyntaxException {
-        for(String line : parseRequestLines(rawRequest)){
-            if(lineIsStartOfRequest(line)){
+        for (String line : parseRequestLines(rawRequest)) {
+            if (lineIsStartOfRequest(line)) {
                 String[] startLine = parseStartLine(line);
                 request = new Request(startLine[0], new URI(startLine[1]), startLine[2]);
-            }else if(lineIsAHeader(line)){
+            } else if (lineIsAHeader(line)) {
                 String [] heading = parseHeader(line);
                 request.addHeader(heading[0], heading[1]);
-            }else{
+            } else {
                 request.setBody(line);
             }
         }
@@ -29,7 +29,7 @@ public class RequestParser {
         return (line.split(" ").length == 3 && line.contains("HTTP/1.1"));
     }
 
-    private static String[] parseStartLine(String line){
+    private static String[] parseStartLine(String line) {
         return line.split(" ");
     }
 

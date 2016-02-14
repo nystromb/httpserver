@@ -14,7 +14,7 @@ public class Response {
     public HashMap<String, String> headers;
     public byte[] body = "".getBytes();
 
-    public Response(Builder builder){
+    public Response(Builder builder) {
         this.statusLine = PROTOCOL + " " + String.valueOf(builder.status) + " " + statusCodeMap.get(builder.status);
         this.headers = builder.headers;
         this.body = builder.body;
@@ -29,7 +29,7 @@ public class Response {
 
         }
 
-        public Builder(int code, String body){
+        public Builder(int code, String body) {
             this.status = code;
             this.body = body.getBytes();
             headers.put("Content-Length", String.valueOf(this.body.length));
@@ -51,7 +51,7 @@ public class Response {
             return this;
         }
 
-        public Builder addHeader(String header, String value){
+        public Builder addHeader(String header, String value) {
             this.headers.put(header, value);
             return this;
         }
@@ -66,7 +66,7 @@ public class Response {
             return this;
         }
 
-        public Response build(){
+        public Response build() {
             return new Response(this);
         }
     }
@@ -76,7 +76,7 @@ public class Response {
 
         buffer.write((statusLine + "\r\n").getBytes());
 
-        for(Entry<String, String> header : headers.entrySet()){
+        for (Entry<String, String> header : headers.entrySet()) {
             buffer.write((header.getKey() + ": " + header.getValue() + "\r\n").getBytes());
         }
 

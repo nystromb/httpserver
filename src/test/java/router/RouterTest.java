@@ -7,7 +7,7 @@ public class RouterTest {
     Route rootRoute = new Route("/", new DirectoryHandler());
 
     @Before
-    public void setUp(){
+    public void setUp() {
         Router.addRoute(rootRoute);
     }
 

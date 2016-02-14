@@ -8,7 +8,7 @@ public class Request {
     String method, version, body = "";
     Hashtable<String, String> headers = new Hashtable<>();
 
-    public Request(String method, URI uri, String protocol){
+    public Request(String method, URI uri, String protocol) {
         this.method = method;
         this.uri = uri;
         this.version = protocol;
@@ -18,7 +18,7 @@ public class Request {
 		return method;
 	}
 
-    public String getVersion(){
+    public String getVersion() {
         return version;
     }
 
@@ -47,7 +47,7 @@ public class Request {
 	}
 
     public String getQuery() {
-        if(uri.getQuery() == null)
+        if (uri.getQuery() == null)
             return "";
 
         return uri.getQuery().replaceAll("(?<![\\s><!+-,])[=]", " = ").replaceAll("(?<![\\s><!+-,])[&]", " ");

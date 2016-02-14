@@ -19,7 +19,7 @@ public class Authorization implements RequestHandler {
 
     public Response handle(Request request) throws IOException {
         String authHeader = "Basic " + new String(this.authorization);
-        if(authHeader.equals(request.getHeader("Authorization"))) {
+        if (authHeader.equals(request.getHeader("Authorization"))) {
             return handler.handle(request);
         }
 
