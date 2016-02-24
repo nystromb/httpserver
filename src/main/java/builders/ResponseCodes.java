@@ -3,7 +3,7 @@ package builders;
 import java.util.HashMap;
 
 public class ResponseCodes extends HashMap<Integer, String> {
-    public ResponseCodes(){
+    public ResponseCodes() {
         this.put(200, "OK");
         this.put(204, "No Content");
         this.put(206, "Partial Content");

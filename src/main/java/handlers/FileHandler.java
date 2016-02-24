@@ -14,18 +14,18 @@ public class FileHandler extends ApplicationController {
 
     @Override
     protected Response get(Request request) throws IOException {
-        if(request.hasHeader("Range")) {
+        if (request.hasHeader("Range")) {
             response.status(206);
 
             String ranges = request.getHeader("Range").split("=")[1];
             String[] range = ranges.split("-");
 
             String contents = FileUtil.readFileContents(new File(Settings.PUBLIC_DIR, request.getPath()));
-            if(ranges.startsWith("-")){
+            if (ranges.startsWith("-")) {
                 response.setBody(contents.substring(contents.length() - Integer.parseInt(range[1])));
-            }else if (ranges.endsWith("-")){
+            } else if (ranges.endsWith("-")) {
                 response.setBody(contents.substring(Integer.parseInt(range[0])));
-            }else {
+            } else {
                 response.setBody(contents.substring(Integer.parseInt(range[0]), (Integer.parseInt(range[1]) + 1)));
             }
             return response.build();
@@ -37,12 +37,12 @@ public class FileHandler extends ApplicationController {
     }
 
     @Override
-    protected Response put(Request request){
+    protected Response put(Request request) {
         return response.status(405).build();
     }
 
     @Override
-    protected Response post(Request request){
+    protected Response post(Request request) {
         return response.status(405).build();
     }
 

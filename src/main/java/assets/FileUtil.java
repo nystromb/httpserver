@@ -13,7 +13,7 @@ public class FileUtil {
         return Files.readAllBytes(new File(Settings.PUBLIC_DIR, path).toPath().normalize());
     }
 
-    public static String readFileContents(File path){
+    public static String readFileContents(File path) {
         String contents = "";
         try {
             FileReader reader = new FileReader(path);
@@ -21,7 +21,7 @@ public class FileUtil {
             while ((character = reader.read()) != -1) {
                 contents += (char) character;
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return contents;

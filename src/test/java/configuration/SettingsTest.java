@@ -23,7 +23,7 @@ public class SettingsTest {
     }
 
     @Test
-    public void testParseArgs(){
+    public void testParseArgs() {
         Settings.parse(new String[]{"-p", "9009", "-d", "/"});
 
         assertTrue(Settings.PUBLIC_DIR == "/");
@@ -37,7 +37,7 @@ public class SettingsTest {
     }
 
     @Test
-    public void testCreatesLogsDirectory(){
+    public void testCreatesLogsDirectory() {
         Settings.setUpLogger();
 
         assertTrue(Files.exists(new File(System.getProperty("user.dir"), "/logs/").toPath()));

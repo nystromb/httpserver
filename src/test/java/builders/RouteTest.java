@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 public class RouteTest {
     @Before
-    public void setUp(){
+    public void setUp() {
 
     }
 

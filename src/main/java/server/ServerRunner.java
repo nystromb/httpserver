@@ -30,7 +30,7 @@ public class ServerRunner implements Runnable {
         try (
                 BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 OutputStream output = client.getOutputStream()
-        ){
+        ) {
             String rawRequest = RequestReader.read(input);
             Request request = RequestParser.process(rawRequest);
 

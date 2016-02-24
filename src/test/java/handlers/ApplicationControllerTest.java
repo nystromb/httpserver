@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 public class ApplicationControllerTest {
 
     @Before
-    public void setUp(){
+    public void setUp() {
 
     }
 

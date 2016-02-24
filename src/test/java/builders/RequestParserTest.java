@@ -28,7 +28,7 @@ public class RequestParserTest {
     }
 
     @Test
-    public void testProcessesMultipleHeaders()  throws URISyntaxException{
+    public void testProcessesMultipleHeaders()  throws URISyntaxException {
         request = RequestParser.process("GET / HTTP/1.1\r\nExample-Header: someValue\r\nUser-Agent: HttpClient\r\n\r\n");
 
         assertTrue(request.hasHeader("Example-Header") && request.hasHeader("User-Agent"));
@@ -37,14 +37,14 @@ public class RequestParserTest {
     }
 
     @Test
-    public void testProcessesBodyDataIfHasContentLengthHeader() throws URISyntaxException{
+    public void testProcessesBodyDataIfHasContentLengthHeader() throws URISyntaxException {
         request = RequestParser.process("GET / HTTP/1.1\r\nExample-Header: someValue\r\nUser-Agent: HttpClient\r\nContent-Length: 9\r\n\r\nsome=data");
 
         assertEquals("some=data", request.getBody());
     }
 
     @Test
-    public void testWithHeaderWith3Components() throws URISyntaxException{
+    public void testWithHeaderWith3Components() throws URISyntaxException {
         request = RequestParser.process("GET /logs HTTP/1.1\r\nExample-Header: someValue\r\nUser-Agent: HttpClient\r\nAuthorization: Basic AKSFDLSDFlskdfj\r\nsome=data");
 
         assertEquals("/logs", request.getPath());
