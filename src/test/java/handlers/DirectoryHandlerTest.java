@@ -2,9 +2,7 @@ package handlers;
 
 import builders.Request;
 import builders.Response;
-import handlers.ApplicationController;
-import mocks.MockController;
-import org.junit.Before;
+import configuration.HTTPConfiguration;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,12 +12,8 @@ import java.net.URISyntaxException;
 import static org.junit.Assert.assertTrue;
 
 public class DirectoryHandlerTest {
-    ApplicationController handler = new MockController();
-
-    @Before
-    public void setUp() throws IOException {
-        ;
-    }
+    HTTPConfiguration config = new HTTPConfiguration();
+    ApplicationController handler = new DirectoryHandler(config.getPublicDirectory());
 
     @Test
     public void testReturns200OK() throws URISyntaxException, IOException {

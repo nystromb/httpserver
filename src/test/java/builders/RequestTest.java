@@ -1,8 +1,6 @@
 package builders;
 
-import builders.Request;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.net.URI;
@@ -12,10 +10,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class RequestTest {
-	@Before
-	public void setUp() throws Exception {
-		
-	}
+
 	@Test
 	public void testSetMethodTypeInRequest() throws URISyntaxException {
 		Request request = new Request("GET", new URI("/?some=query"), "HTTP/1.1");

@@ -1,25 +1,36 @@
 package router;
 
-import java.util.ArrayList;
-import java.util.List;
+import builders.Request;
+import builders.Response;
+import handlers.DirectoryHandler;
+import handlers.FileHandler;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
 
 public class Router {
-    private static List<Route> routes = new ArrayList<>();
+    private HashMap<String, Route> routes;
+    private Path publicDirectory;
 
-    public static void addRoute(Route route) {
-        routes.add(route);
+    public Router(Path publicDirectory, HashMap<String, Route> routes) {
+        this.publicDirectory = publicDirectory;
+        this.routes = routes;
     }
 
-    public static Route getRoute(String path) {
-        for (Route route : routes) {
-            if (route.match(path))
-                return route;
+    public Response handle(Request request) throws IOException {
+        File requestedPath = Paths.get(publicDirectory.toString() + request.getPath()).toFile();
+
+        if(requestedPath.isFile())
+           return new FileHandler(publicDirectory).handle(request);
+        else if (requestedPath.isDirectory()) {
+            return new DirectoryHandler(publicDirectory).handle(request);
+        } else if (routes.containsKey(request.getPath())) {
+            return routes.get(request.getPath()).handle(request);
         }
 
-        return null;
-    }
-
-    public static void clearAll() {
-        routes.clear();
+        return new Response.Builder(404).build();
     }
 }

@@ -21,9 +21,9 @@ public class Response {
     }
 
     public static class Builder {
-        public int status;
-        public HashMap<String, String> headers = new HashMap<>();
-        public byte[] body = "".getBytes();
+        private int status;
+        private HashMap<String, String> headers = new HashMap<>();
+        private byte[] body = "".getBytes();
 
         public Builder() {
 
@@ -32,12 +32,6 @@ public class Response {
         public Builder(int code, String body) {
             this.status = code;
             this.body = body.getBytes();
-            headers.put("Content-Length", String.valueOf(this.body.length));
-        }
-
-        public Builder(int code, byte[] body) {
-            this.status = code;
-            this.body = body;
             headers.put("Content-Length", String.valueOf(this.body.length));
         }
 
@@ -53,11 +47,6 @@ public class Response {
 
         public Builder addHeader(String header, String value) {
             this.headers.put(header, value);
-            return this;
-        }
-
-        public Builder setBody(byte[] contents) {
-            body = contents;
             return this;
         }
 

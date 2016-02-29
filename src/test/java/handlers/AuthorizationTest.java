@@ -2,9 +2,7 @@ package handlers;
 
 import builders.Request;
 import builders.Response;
-import handlers.Authorization;
 import mocks.MockController;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -16,11 +14,6 @@ import static org.junit.Assert.assertTrue;
 
 public class AuthorizationTest {
     Authorization handler = new Authorization("admin", "hunter2", "secretKey", new MockController());
-
-    @Before
-    public void setUp() {
-
-    }
 
     @Test
     public void testWithoutAuthorization() throws URISyntaxException, IOException {

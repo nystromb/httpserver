@@ -1,11 +1,11 @@
 package server;
 
-import configuration.Settings;
+import configuration.HTTPConfiguration;
+import handlers.ApplicationController;
 import handlers.Authorization;
+import handlers.FileHandler;
 import mocks.MockController;
-import mocks.MockRedirect;
 import mocks.MockSocket;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import router.Route;
@@ -14,230 +14,169 @@ import router.Router;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertTrue;
 
 public class ServerRunnerTest {
+    HTTPConfiguration config = new HTTPConfiguration();
     OutputStream output;
 
     @Before
     public void setUp() throws IOException {
-        createDirectories();
-        Router.addRoute(new Route("/", new MockController()));
-        Router.addRoute(new Route("/method_options", new MockController()));
-        Router.addRoute(new Route("/logs", new Authorization("admin", "hunter2", "secret", new MockController())));
-        Router.addRoute(new Route("/redirect", new MockRedirect("/")));
-        Router.addRoute(new Route("/parameters", new MockController()));
-        Router.addRoute(new Route("/file1", new MockController()));
-        Router.addRoute(new Route("/file2", new MockController()));
-        Router.addRoute(new Route("/image.png", new MockController()));
-        Router.addRoute(new Route("/image.jpeg", new MockController()));
-        Router.addRoute(new Route("/image.gif", new MockController()));
-        Router.addRoute(new Route("/text-file.txt", new MockController()));
-        Router.addRoute(new Route("/partial_content.txt", new MockController()));
-        Router.addRoute(new Route("/patch_content.txt", new MockController()));
         output = new ByteArrayOutputStream();
-        deleteCreatedFiles();
     }
 
-    @After
-    public void shutDown() {
-        Router.clearAll();
+    private Path createTempFile(String fileName, String ext) throws IOException {
+        if (ext == null)
+            ext = ".txt";
+        Path file = Files.createTempFile(config.getPublicDirectory(), fileName, ext);
+        file.toFile().deleteOnExit();
+        return file;
     }
 
-    private void createDirectories() throws IOException {
-        File publicDir = new File(System.getProperty("user.dir"), "/public/");
-        publicDir.mkdir();
-        Files.createFile(new File(Settings.PUBLIC_DIR, "/file1").toPath());
-        Files.createFile(new File(Settings.PUBLIC_DIR, "/file2").toPath());
-        Files.createFile(new File(Settings.PUBLIC_DIR, "/text-file.txt").toPath());
-        Files.createFile(new File(Settings.PUBLIC_DIR, "/image.png").toPath());
-        Files.createFile(new File(Settings.PUBLIC_DIR, "/image.gif").toPath());
-        Files.createFile(new File(Settings.PUBLIC_DIR, "/partial_content.txt").toPath());
-        Files.createFile(new File(Settings.PUBLIC_DIR, "/patch-content.txt").toPath());
-        Files.createFile(new File(Settings.PUBLIC_DIR, "/image.jpeg").toPath());
-    }
-
-
-    private void deleteCreatedFiles() throws IOException {
-        Files.delete(new File(Settings.PUBLIC_DIR, "/file1").toPath());
-        Files.delete(new File(Settings.PUBLIC_DIR, "/file2").toPath());
-        Files.delete(new File(Settings.PUBLIC_DIR, "/text-file.txt").toPath());
-        Files.delete(new File(Settings.PUBLIC_DIR, "/image.png").toPath());
-        Files.delete(new File(Settings.PUBLIC_DIR, "/image.gif").toPath());
-        Files.delete(new File(Settings.PUBLIC_DIR, "/partial_content.txt").toPath());
-        Files.delete(new File(Settings.PUBLIC_DIR, "/patch-content.txt").toPath());
-        Files.delete(new File(Settings.PUBLIC_DIR, "/image.jpeg").toPath());
+    private void writeTo(Path filePath, String contents) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath.toFile()));
+        writer.write(contents);
+        writer.close();
     }
 
     @Test
     public void testRootReturns200OK() throws URISyntaxException {
+        Router router = new Router(config.getPublicDirectory(), new HashMap<>());
         String request = "GET / HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client).run();
+        new ServerRunner(client, router).run();
 
         assertTrue(output.toString().contains("200 OK"));
     }
 
     @Test
     public void testUndefinedRouteNotFound() throws URISyntaxException {
+        Router router = new Router(config.getPublicDirectory(), new HashMap<>());
         String request = "GET /foobar HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client).run();
+        new ServerRunner(client, router).run();
 
         assertTrue(output.toString().contains("404 Not Found"));
     }
 
     @Test
     public void testLogsReturns401Unauthorized() throws URISyntaxException {
+        ApplicationController handler = new FileHandler(config.getPublicDirectory());
+        Route logsRoute = new Route(new Authorization("admin","hunter2","secret", handler));
+        HashMap<String, Route> routes = new HashMap<>();
+        routes.put("/logs", logsRoute);
+        Router router = new Router(config.getPublicDirectory(), routes);
         String request = "GET /logs HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client).run();
+        new ServerRunner(client, router).run();
 
         assertTrue(output.toString().contains("401 Unauthorized"));
     }
 
-
     @Test
     public void testLogsReturns200OK() throws URISyntaxException {
+        ApplicationController handler = new MockController(config.getPublicDirectory());
+        Route logsRoute = new Route(new Authorization("admin","hunter2","secret", handler));
+        HashMap<String, Route> routes = new HashMap<>();
+        routes.put("/logs", logsRoute);
+        Router router = new Router(config.getPublicDirectory(), routes);
         String request = "GET /logs HTTP/1.1\r\nAuthorization: Basic YWRtaW46aHVudGVyMg==\r\n\r\n";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client).run();
+        new ServerRunner(client, router).run();
 
         assertTrue(output.toString().contains("200 OK"));
     }
 
     @Test
-    public void testPostToRootNotAllowed() throws URISyntaxException {
+    public void testPostToRootDirectoryNotAllowed() throws URISyntaxException {
+        Router router = new Router(config.getPublicDirectory(), new HashMap<>());
         String request = "POST / HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client).run();
+        new ServerRunner(client, router).run();
 
         assertTrue(output.toString().contains("405 Method Not Allowed"));
     }
 
     @Test
-    public void testGetsRedirect302() throws URISyntaxException {
-        String request = "GET /redirect HTTP/1.1";
+    public void testPostsToFileNotAllowed() throws URISyntaxException, IOException {
+        Router router = new Router(config.getPublicDirectory(), new HashMap<>());
+        Path file = createTempFile("file1", null);
+        String request = "POST /" + file.toFile().getName().toString() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client).run();
+        new ServerRunner(client, router).run();
 
-        assertTrue(output.toString().contains("302 Found"));
+        assertTrue(output.toString().contains("405 Method Not Allowed"));
     }
 
     @Test
-    public void testMethodOptions() throws URISyntaxException {
+    public void testMethodOptionsRoute() throws URISyntaxException {
+        HashMap<String, Route> routes = new HashMap<>();
+        routes.put("/method_options", new Route(new MockController()));
+        Router router = new Router(config.getPublicDirectory(), routes);
         String request = "GET /method_options HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client).run();
+        new ServerRunner(client, router).run();
 
         assertTrue(output.toString().contains("200 OK"));
     }
 
     @Test
-    public void testParameters() throws URISyntaxException {
-        String request = "GET /parameters HTTP/1.1";
+    public void testGetsFileContents() throws URISyntaxException, IOException {
+        Router router = new Router(config.getPublicDirectory(), new HashMap<>());
+        Path file = createTempFile("file1", null);
+        writeTo(file, "file1 contents");
+        String request = "GET /" + file.toFile().getName().toString() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client).run();
+        new ServerRunner(client, router).run();
+
+        assertTrue(output.toString().contains("200 OK"));
+        assertTrue(output.toString().contains("file1 contents"));
+    }
+
+    @Test
+    public void testGetsPNGContents() throws URISyntaxException, IOException {
+        Router router = new Router(config.getPublicDirectory(), new HashMap<>());
+        Path file = createTempFile("image", ".png");
+        String request = "GET /" + file.toFile().getName().toString() + " HTTP/1.1";
+        MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
+
+        new ServerRunner(client, router).run();
 
         assertTrue(output.toString().contains("200 OK"));
     }
 
     @Test
-    public void testFile1GetsContents() throws URISyntaxException {
-        String request = "GET /file1 HTTP/1.1";
+    public void testGetsJPEGContents() throws URISyntaxException, IOException {
+        Router router = new Router(config.getPublicDirectory(), new HashMap<>());
+        Path file = createTempFile("image", ".jpeg");
+        String request = "GET /" + file.toFile().getName().toString() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client).run();
+        new ServerRunner(client, router).run();
 
         assertTrue(output.toString().contains("200 OK"));
     }
 
     @Test
-    public void testGetsPNGContents() throws URISyntaxException {
-        String request = "GET /image.png HTTP/1.1";
+    public void testGetsGIFContents() throws URISyntaxException, IOException {
+        Router router = new Router(config.getPublicDirectory(), new HashMap<>());
+        Path file = createTempFile("image", ".gif");
+        String request = "GET /" + file.toFile().getName().toString() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client).run();
+        new ServerRunner(client, router).run();
 
         assertTrue(output.toString().contains("200 OK"));
-    }
-
-    @Test
-    public void testGetsJPEGContents() throws URISyntaxException {
-        String request = "GET /image.jpeg HTTP/1.1";
-        MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
-
-        new ServerRunner(client).run();
-
-        assertTrue(output.toString().contains("200 OK"));
-    }
-
-    @Test
-    public void testGetsGIFContents() throws URISyntaxException {
-        String request = "GET /image.gif HTTP/1.1";
-        MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
-
-        new ServerRunner(client).run();
-
-        assertTrue(output.toString().contains("200 OK"));
-    }
-
-    @Test
-    public void testGetsTextFileContents() throws URISyntaxException {
-        String request = "GET /text-file.txt HTTP/1.1";
-        MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
-
-        new ServerRunner(client).run();
-
-        assertTrue(output.toString().contains("200 OK"));
-    }
-
-    @Test
-    public void testGetsPartialContents() throws URISyntaxException {
-        String request = "GET /partial_content.txt HTTP/1.1";
-        MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
-
-        new ServerRunner(client).run();
-
-        assertTrue(output.toString().contains("200 OK"));
-    }
-
-    @Test
-    public void testGetsPatchContentFile() throws URISyntaxException {
-        String request = "GET /patch_content.txt HTTP/1.1";
-        MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
-
-        new ServerRunner(client).run();
-
-        assertTrue(output.toString().contains("200 OK"));
-    }
-
-    @Test
-    public void testGetsFile2OK() throws URISyntaxException {
-        String request = "GET /file2 HTTP/1.1";
-        MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
-
-        new ServerRunner(client).run();
-
-        assertTrue(output.toString().contains("200 OK"));
-    }
-
-    @Test
-    public void testPostsFile2NotAllowed() throws URISyntaxException {
-        String request = "POST /file1 HTTP/1.1";
-        MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
-
-        new ServerRunner(client).run();
-
-        assertTrue(output.toString().contains("405 Method Not Allowed"));
     }
 }

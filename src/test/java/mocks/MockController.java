@@ -5,9 +5,17 @@ import builders.Response;
 import handlers.ApplicationController;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 
 public class MockController extends ApplicationController {
+    Path publicDirectory;
+
+    public MockController() {}
+
+    public MockController(Path publicDirectory) {
+        this.publicDirectory = publicDirectory;
+    }
 
     @Override
     protected Response get(Request request) throws IOException {
