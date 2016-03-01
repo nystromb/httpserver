@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class FileHandler extends ApplicationController {
+public class FileHandler extends ApplicationHandler {
     private Response.Builder response = new Response.Builder(200);
     private Path publicDirectory;
 

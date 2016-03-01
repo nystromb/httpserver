@@ -6,7 +6,7 @@ import builders.Response;
 import java.io.File;
 import java.nio.file.Path;
 
-public class DirectoryHandler extends ApplicationController {
+public class DirectoryHandler extends ApplicationHandler {
     private Path publicDirectory;
 
     public DirectoryHandler(Path publicDirectory) {

@@ -3,64 +3,64 @@ package handlers;
 import builders.Request;
 import builders.Response;
 
-public abstract class ApplicationController implements RequestHandler {
-    protected Response response = new Response.Builder(405, "Method Not Allowed").build();
+public abstract class ApplicationHandler implements RequestHandler {
+    protected Response methodNotAllowed = new Response.Builder(405, "Method Not Allowed").build();
 
     @Override
     public Response handle(Request request) {
 
         switch (request.getMethod()) {
             case "GET":
-                response = get(request);
+                methodNotAllowed = get(request);
                 break;
             case "HEAD":
-                response = head(request);
+                methodNotAllowed = head(request);
                 break;
             case "POST":
-                response = post(request);
+                methodNotAllowed = post(request);
                 break;
             case "PUT":
-                response = put(request);
+                methodNotAllowed = put(request);
                 break;
             case "DELETE":
-                response = delete(request);
+                methodNotAllowed = delete(request);
                 break;
             case "OPTIONS":
-                response = options(request);
+                methodNotAllowed = options(request);
                 break;
             case "PATCH":
-                response = patch(request);
+                methodNotAllowed = patch(request);
                 break;
         }
 
-        return response;
+        return methodNotAllowed;
     }
 
     protected Response get(Request request) {
-        return response;
+        return methodNotAllowed;
     }
 
     protected Response head(Request request) {
-        return response;
+        return methodNotAllowed;
     }
 
     protected Response post(Request request) {
-        return response;
+        return methodNotAllowed;
     }
 
     protected Response put(Request request) {
-        return response;
+        return methodNotAllowed;
     }
 
     protected Response delete(Request request) {
-        return response;
+        return methodNotAllowed;
     }
 
     protected Response options(Request request) {
-        return response;
+        return methodNotAllowed;
     }
 
     protected Response patch(Request request) {
-        return response;
+        return methodNotAllowed;
     }
 }

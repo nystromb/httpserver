@@ -3,7 +3,7 @@ package handlers;
 import builders.Request;
 import builders.Response;
 
-public class RedirectHandler extends ApplicationController {
+public class RedirectHandler extends ApplicationHandler {
     private Response.Builder response = new Response.Builder(302);
     String redirectPath;
 

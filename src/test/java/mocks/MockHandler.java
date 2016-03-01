@@ -2,23 +2,22 @@ package mocks;
 
 import builders.Request;
 import builders.Response;
-import handlers.ApplicationController;
+import handlers.ApplicationHandler;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
 
-public class MockController extends ApplicationController {
+public class MockHandler extends ApplicationHandler {
     Path publicDirectory;
 
-    public MockController() {}
+    public MockHandler() {}
 
-    public MockController(Path publicDirectory) {
+    public MockHandler(Path publicDirectory) {
         this.publicDirectory = publicDirectory;
     }
 
     @Override
-    protected Response get(Request request) throws IOException {
+    protected Response get(Request request) {
         return new Response.Builder(200).build();
     }
 

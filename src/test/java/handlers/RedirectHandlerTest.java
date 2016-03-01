@@ -10,7 +10,7 @@ import java.net.URISyntaxException;
 import static org.junit.Assert.assertTrue;
 
 public class RedirectHandlerTest {
-    ApplicationController handler = new RedirectHandler("/");
+    ApplicationHandler handler = new RedirectHandler("/");
 
     @Test
     public void test() throws URISyntaxException {

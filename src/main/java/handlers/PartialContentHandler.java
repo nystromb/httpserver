@@ -3,7 +3,7 @@ package handlers;
 import builders.Request;
 import builders.Response;
 
-public class PartialContentHandler extends ApplicationController {
+public class PartialContentHandler extends ApplicationHandler {
     private Response.Builder response = new Response.Builder(206);
     private String fileContents;
 

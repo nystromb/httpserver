@@ -1,10 +1,10 @@
 package server;
 
 import configuration.HTTPConfiguration;
-import handlers.ApplicationController;
+import handlers.ApplicationHandler;
 import handlers.Authorization;
 import handlers.FileHandler;
-import mocks.MockController;
+import mocks.MockHandler;
 import mocks.MockSocket;
 import org.junit.Before;
 import org.junit.Test;
@@ -66,7 +66,7 @@ public class ServerRunnerTest {
 
     @Test
     public void testLogsReturns401Unauthorized() throws URISyntaxException {
-        ApplicationController handler = new FileHandler(config.getPublicDirectory());
+        ApplicationHandler handler = new FileHandler(config.getPublicDirectory());
         Route logsRoute = new Route(new Authorization("admin","hunter2","secret", handler));
         HashMap<String, Route> routes = new HashMap<>();
         routes.put("/logs", logsRoute);
@@ -81,7 +81,7 @@ public class ServerRunnerTest {
 
     @Test
     public void testLogsReturns200OK() throws URISyntaxException {
-        ApplicationController handler = new MockController(config.getPublicDirectory());
+        ApplicationHandler handler = new MockHandler(config.getPublicDirectory());
         Route logsRoute = new Route(new Authorization("admin","hunter2","secret", handler));
         HashMap<String, Route> routes = new HashMap<>();
         routes.put("/logs", logsRoute);
@@ -120,7 +120,7 @@ public class ServerRunnerTest {
     @Test
     public void testMethodOptionsRoute() throws URISyntaxException {
         HashMap<String, Route> routes = new HashMap<>();
-        routes.put("/method_options", new Route(new MockController()));
+        routes.put("/method_options", new Route(new MockHandler()));
         Router router = new Router(config.getPublicDirectory(), routes);
         String request = "GET /method_options HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);

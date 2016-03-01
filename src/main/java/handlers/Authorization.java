@@ -10,7 +10,7 @@ public class Authorization implements RequestHandler {
     private String challenge = "Default";
     private byte[] authorization;
 
-    public Authorization(String user, String password, String challenge, ApplicationController handler) {
+    public Authorization(String user, String password, String challenge, ApplicationHandler handler) {
         this.authorization = Base64.getEncoder().encode((user + ":" + password).getBytes());
         this.challenge = challenge;
         this.handler = handler;

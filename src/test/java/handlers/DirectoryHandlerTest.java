@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 public class DirectoryHandlerTest {
     HTTPConfiguration config = new HTTPConfiguration();
-    ApplicationController handler = new DirectoryHandler(config.getPublicDirectory());
+    ApplicationHandler handler = new DirectoryHandler(config.getPublicDirectory());
 
     @Test
     public void testReturns200OK() throws URISyntaxException {

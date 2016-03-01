@@ -2,7 +2,7 @@ package handlers;
 
 import builders.Request;
 import builders.Response;
-import mocks.MockController;
+import mocks.MockHandler;
 import org.junit.Test;
 
 import java.net.URI;
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class AuthorizationTest {
-    Authorization handler = new Authorization("admin", "hunter2", "secretKey", new MockController());
+    Authorization handler = new Authorization("admin", "hunter2", "secretKey", new MockHandler());
 
     @Test
     public void testWithoutAuthorization() throws URISyntaxException {
