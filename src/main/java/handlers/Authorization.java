@@ -3,7 +3,6 @@ package handlers;
 import builders.Request;
 import builders.Response;
 
-import java.io.IOException;
 import java.util.Base64;
 
 public class Authorization implements RequestHandler {
@@ -11,13 +10,13 @@ public class Authorization implements RequestHandler {
     private String challenge = "Default";
     private byte[] authorization;
 
-    public Authorization(String user, String password, String challenge, ApplicationController handler) {
+    public Authorization(String user, String password, String challenge, ApplicationHandler handler) {
         this.authorization = Base64.getEncoder().encode((user + ":" + password).getBytes());
         this.challenge = challenge;
         this.handler = handler;
     }
 
-    public Response handle(Request request) throws IOException {
+    public Response handle(Request request) {
         String authHeader = "Basic " + new String(this.authorization);
         if (authHeader.equals(request.getHeader("Authorization"))) {
             return handler.handle(request);

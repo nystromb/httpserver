@@ -43,8 +43,8 @@ public class FileHandlerTest {
 
         Response response = handler.handle(request);
 
-        assertTrue(response.statusLine.contains("200 OK"));
-        assertEquals("file1 contents", new String(response.body));
+        assertTrue(response.getStatusLine().contains("200 OK"));
+        assertEquals("file1 contents", new String(response.getBody()));
     }
 
     @Test
@@ -53,7 +53,7 @@ public class FileHandlerTest {
         
         Response response = handler.handle(request);
         
-        assertTrue(response.statusLine.contains("405"));
+        assertTrue(response.getStatusLine().contains("405"));
     }
     
     @Test
@@ -62,7 +62,7 @@ public class FileHandlerTest {
 
         Response response = handler.handle(request);
 
-        assertTrue(response.statusLine.contains("405"));
+        assertTrue(response.getStatusLine().contains("405"));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class FileHandlerTest {
 
         Response response = handler.handle(request);
 
-        assertTrue(response.statusLine.contains("206"));
+        assertTrue(response.getStatusLine().contains("206"));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class FileHandlerTest {
 
         Response response = handler.handle(request);
 
-        assertArrayEquals("This ".getBytes(), response.body);
+        assertArrayEquals("This ".getBytes(), response.getBody());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class FileHandlerTest {
 
         Response response = handler.handle(request);
 
-        assertEquals(" is a file that contains text to read part of in order to fulfill a 206.\n", new String(response.body));
+        assertEquals(" is a file that contains text to read part of in order to fulfill a 206.\n", new String(response.getBody()));
     }
 
 
@@ -111,7 +111,7 @@ public class FileHandlerTest {
 
         Response response = handler.handle(request);
 
-        assertEquals(" 206.\n", new String(response.body));
+        assertEquals(" 206.\n", new String(response.getBody()));
     }
 
     @Test
@@ -123,7 +123,7 @@ public class FileHandlerTest {
 
         Response response = handler.handle(request);
 
-        assertTrue(response.statusLine.contains("204"));
+        assertTrue(response.getStatusLine().contains("204"));
         assertFalse(new String(response.toByteArray()).contains("patched content"));
 
         request = new Request("GET", new URI("/" + file.toFile().getName().toString()), "HTTP/1.1");

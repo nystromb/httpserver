@@ -6,7 +6,6 @@ import handlers.DirectoryHandler;
 import handlers.FileHandler;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -20,7 +19,7 @@ public class Router {
         this.routes = routes;
     }
 
-    public Response handle(Request request) throws IOException {
+    public Response handle(Request request) {
         File requestedPath = Paths.get(publicDirectory.toString() + request.getPath()).toFile();
 
         if(requestedPath.isFile())
