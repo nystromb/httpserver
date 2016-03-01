@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 public class FileHandlerTest {
     HTTPConfiguration config = new HTTPConfiguration();
     FileHandler handler = new FileHandler(config.getPublicDirectory());
+    String fileContents = "This is a file that contains text to read part of in order to fulfill a 206.\n";
 
     private Path createTempFile(String fileName) throws IOException {
         Path file = Files.createTempFile(config.getPublicDirectory(), fileName, ".txt");
@@ -67,7 +68,7 @@ public class FileHandlerTest {
     @Test
     public void testRangeHeaderReturns206Code() throws URISyntaxException, IOException {
         Path file = createTempFile("partial_content");
-        writeTo(file, "This is a file that contains text to read part of in order to fulfill a 206.\n");
+        writeTo(file, fileContents);
         Request request = new Request("GET", new URI("/" + file.toFile().getName().toString()), "HTTP/1.1");
         request.addHeader("Range", "bytes=0-4");
 
@@ -79,7 +80,7 @@ public class FileHandlerTest {
     @Test
     public void testRangeHeaderReturnsPartialFileContentsRange04() throws URISyntaxException, IOException {
         Path file = createTempFile("partial_content");
-        writeTo(file, "This is a file that contains text to read part of in order to fulfill a 206.\n");
+        writeTo(file, fileContents);
         Request request = new Request("GET", new URI("/" + file.toFile().getName().toString()), "HTTP/1.1");
         request.addHeader("Range", "bytes=0-4");
 
@@ -91,7 +92,7 @@ public class FileHandlerTest {
     @Test
     public void testRangeHeaderReturnsPartialFileContentsStart4() throws URISyntaxException, IOException {
         Path file = createTempFile("partial_content");
-        writeTo(file, "This is a file that contains text to read part of in order to fulfill a 206.\n");
+        writeTo(file, fileContents);
         Request request = new Request("GET", new URI("/" + file.toFile().getName().toString()), "HTTP/1.1");
         request.addHeader("Range", "bytes=4-");
 
@@ -104,7 +105,7 @@ public class FileHandlerTest {
     @Test
     public void testRangeHeaderReturnsPartialFileContentsEnd6() throws URISyntaxException, IOException {
         Path file = createTempFile("partial_content");
-        writeTo(file, "This is a file that contains text to read part of in order to fulfill a 206.\n");
+        writeTo(file, fileContents);
         Request request = new Request("GET", new URI("/" + file.toFile().getName().toString()), "HTTP/1.1");
         request.addHeader("Range", "bytes=-6");
 

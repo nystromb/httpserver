@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class FileHandler extends ApplicationController {
-    private Response.Builder response = new Response.Builder();
+    private Response.Builder response = new Response.Builder(200);
     private Path publicDirectory;
 
     public FileHandler(Path publicDirectory) {
@@ -21,25 +21,10 @@ public class FileHandler extends ApplicationController {
         String contents = new String(Files.readAllBytes(Paths.get(publicDirectory.toString() + request.getPath())));
 
         if (request.hasHeader("Range")) {
-            response.status(206);
-
-            String ranges = request.getHeader("Range").split("=")[1];
-            String[] range = ranges.split("-");
-
-            if (ranges.startsWith("-")) {
-                response.setBody(contents.substring(contents.length() - Integer.parseInt(range[1])));
-            } else if (ranges.endsWith("-")) {
-                response.setBody(contents.substring(Integer.parseInt(range[0])));
-            } else {
-                response.setBody(contents.substring(Integer.parseInt(range[0]), (Integer.parseInt(range[1]) + 1)));
-            }
-
-            return response.build();
-        } else {
-            response.status(200).setBody(contents);
+            return new PartialContentHandler(contents).handle(request);
         }
 
-        return response.build();
+        return response.setBody(contents).build();
     }
 
     @Override
