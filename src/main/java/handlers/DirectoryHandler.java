@@ -16,8 +16,9 @@ public class DirectoryHandler extends ApplicationController {
 
     @Override
     protected Response get(Request request) throws IOException {
+        File directory = new File(publicDirectory.toString(), request.getPath());
         String contents = "<!DOCTYPE html><html><head></head><body><ul>";
-        for (String file : new File(publicDirectory.toString(), request.getPath()).list()) {
+        for (String file : directory.list()) {
             contents += "<li><a href=\"/" + file +"\">" + file + "</a></li>";
         }
         contents += "</ul></body>";
