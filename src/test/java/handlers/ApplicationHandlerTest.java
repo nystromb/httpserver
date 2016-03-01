@@ -19,7 +19,7 @@ public class ApplicationHandlerTest {
 
         Response response = app.handle(request);
 
-        assertTrue(response.statusLine.contains("200"));
+        assertTrue(response.getStatusLine().contains("200"));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class ApplicationHandlerTest {
 
         Response response = app.handle(request);
 
-        assertTrue(response.statusLine.contains("405"));
+        assertTrue(response.getStatusLine().contains("405"));
     }
 
     @Test
@@ -39,7 +39,7 @@ public class ApplicationHandlerTest {
 
         Response response = app.handle(request);
 
-        assertTrue(response.statusLine.contains("405"));
+        assertTrue(response.getStatusLine().contains("405"));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class ApplicationHandlerTest {
 
         Response response = app.handle(request);
 
-        assertTrue(response.statusLine.contains("405"));
+        assertTrue(response.getStatusLine().contains("405"));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class ApplicationHandlerTest {
 
         Response response = app.handle(request);
 
-        assertTrue(response.statusLine.contains("405"));
+        assertTrue(response.getStatusLine().contains("405"));
     }
 
     @Test
@@ -69,6 +69,6 @@ public class ApplicationHandlerTest {
 
         Response response = app.handle(request);
 
-        assertTrue(response.statusLine.contains("405"));
+        assertTrue(response.getStatusLine().contains("405"));
     }
 }

@@ -24,7 +24,7 @@ public class DirectoryHandlerTest {
 
         Response response = handler.handle(request);
 
-        assertTrue(response.statusLine.contains("200 OK"));
+        assertTrue(response.getStatusLine().contains("200 OK"));
     }
 
     @Test
@@ -34,8 +34,8 @@ public class DirectoryHandlerTest {
 
         Response response = handler.handle(request);
 
-        assertTrue(new String(response.body).contains(listOfFiles[0]));
-        assertTrue(new String(response.body).contains(listOfFiles[listOfFiles.length-1]));
+        assertTrue(new String(response.getBody()).contains(listOfFiles[0]));
+        assertTrue(new String(response.getBody()).contains(listOfFiles[listOfFiles.length-1]));
     }
 
     @Test
@@ -49,6 +49,6 @@ public class DirectoryHandlerTest {
 
         Response response = new DirectoryHandler(config.getPublicDirectory()).handle(request);
 
-        assertTrue(new String(response.body).contains(file.toFile().getName().toString()));
+        assertTrue(new String(response.getBody()).contains(file.toFile().getName().toString()));
     }
 }

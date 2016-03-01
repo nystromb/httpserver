@@ -4,10 +4,7 @@ import builders.Request;
 import builders.Response;
 import handlers.RequestHandler;
 
-import java.io.IOException;
-
 public class Route implements RequestHandler {
-    private String path;
     private RequestHandler handler;
 
     public Route(RequestHandler handler) {
@@ -15,7 +12,7 @@ public class Route implements RequestHandler {
     }
 
     @Override
-    public Response handle(Request request) throws IOException {
+    public Response handle(Request request) {
         return handler.handle(request);
     }
 }

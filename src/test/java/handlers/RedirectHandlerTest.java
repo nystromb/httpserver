@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class RedirectHandlerTest {
@@ -18,8 +19,8 @@ public class RedirectHandlerTest {
 
         Response response = handler.handle(request);
 
-        assertTrue(response.statusLine.contains("302 Found"));
-        assertTrue(response.headers.containsKey("Location"));
-        assertTrue(response.headers.containsValue("http://localhost:5000/"));
+        assertTrue(response.getStatusLine().contains("302 Found"));
+        assertTrue(response.hasHeader("Location"));
+        assertEquals("http://localhost:5000/", response.getHeaderValue("Location"));
     }
 }

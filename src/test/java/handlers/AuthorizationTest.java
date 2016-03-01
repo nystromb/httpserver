@@ -20,8 +20,8 @@ public class AuthorizationTest {
 
         Response response = handler.handle(request);
 
-        assertTrue(response.statusLine.contains("401"));
-        assertTrue(response.headers.containsKey("WWW-Authenticate"));
+        assertTrue(response.getStatusLine().contains("401"));
+        assertTrue(response.hasHeader("WWW-Authenticate"));
     }
 
     @Test
@@ -31,6 +31,6 @@ public class AuthorizationTest {
 
         Response response = handler.handle(request);
 
-        assertEquals("HTTP/1.1 200 OK", response.statusLine);
+        assertEquals("HTTP/1.1 200 OK", response.getStatusLine());
     }
 }
