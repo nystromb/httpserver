@@ -3,13 +3,11 @@ package handlers;
 import builders.Request;
 import builders.Response;
 
-import java.io.IOException;
-
 public abstract class ApplicationController implements RequestHandler {
     protected Response response = new Response.Builder(405, "Method Not Allowed").build();
 
     @Override
-    public Response handle(Request request) throws IOException {
+    public Response handle(Request request) {
 
         switch (request.getMethod()) {
             case "GET":
@@ -38,7 +36,7 @@ public abstract class ApplicationController implements RequestHandler {
         return response;
     }
 
-    protected Response get(Request request) throws IOException {
+    protected Response get(Request request) {
         return response;
     }
 
@@ -62,7 +60,7 @@ public abstract class ApplicationController implements RequestHandler {
         return response;
     }
 
-    protected Response patch(Request request) throws IOException {
+    protected Response patch(Request request) {
         return response;
     }
 }

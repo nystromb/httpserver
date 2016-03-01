@@ -4,7 +4,6 @@ import builders.Request;
 import builders.Response;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -14,7 +13,7 @@ public class RedirectHandlerTest {
     ApplicationController handler = new RedirectHandler("/");
 
     @Test
-    public void test() throws URISyntaxException, IOException {
+    public void test() throws URISyntaxException {
         Request request = new Request("GET", new URI("/redirect"), "HTTP/1.1");
 
         Response response = handler.handle(request);

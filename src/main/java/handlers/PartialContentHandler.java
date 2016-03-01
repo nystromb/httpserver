@@ -3,8 +3,6 @@ package handlers;
 import builders.Request;
 import builders.Response;
 
-import java.io.IOException;
-
 public class PartialContentHandler extends ApplicationController {
     private Response.Builder response = new Response.Builder(206);
     private String fileContents;
@@ -14,7 +12,7 @@ public class PartialContentHandler extends ApplicationController {
     }
 
     @Override
-    protected Response get(Request request) throws IOException {
+    protected Response get(Request request) {
         String ranges = request.getHeader("Range").split("=")[1];
         String[] range = ranges.split("-");
 

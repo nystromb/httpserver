@@ -5,7 +5,6 @@ import builders.Response;
 import mocks.MockController;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -14,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class ApplicationControllerTest {
 
     @Test
-    public void testGetRequest() throws URISyntaxException, IOException {
+    public void testGetRequest() throws URISyntaxException {
         ApplicationController app = new MockController();
         Request request = new Request("GET", new URI("/"), "HTTP/1.1");
 
@@ -24,7 +23,7 @@ public class ApplicationControllerTest {
     }
 
     @Test
-    public void testPostRequest() throws URISyntaxException, IOException {
+    public void testPostRequest() throws URISyntaxException {
         ApplicationController app = new MockController();
         Request request = new Request("POST", new URI("/"), "HTTP/1.1");
 
@@ -34,7 +33,7 @@ public class ApplicationControllerTest {
     }
 
     @Test
-    public void testPutRequest() throws URISyntaxException, IOException {
+    public void testPutRequest() throws URISyntaxException {
         ApplicationController app = new MockController();
         Request request = new Request("PUT", new URI("/"), "HTTP/1.1");
 
@@ -44,7 +43,7 @@ public class ApplicationControllerTest {
     }
 
     @Test
-    public void testDeleteRequest() throws URISyntaxException, IOException {
+    public void testDeleteRequest() throws URISyntaxException {
         ApplicationController app = new MockController();
         Request request = new Request("DELETE", new URI("/"), "HTTP/1.1");
 
@@ -54,7 +53,7 @@ public class ApplicationControllerTest {
     }
 
     @Test
-    public void testOptionsRequest() throws URISyntaxException, IOException {
+    public void testOptionsRequest() throws URISyntaxException {
         ApplicationController app = new MockController();
         Request request = new Request("OPTIONS", new URI("/"), "HTTP/1.1");
 
@@ -64,7 +63,7 @@ public class ApplicationControllerTest {
     }
 
     @Test
-    public void testPatchRequest() throws URISyntaxException, IOException {
+    public void testPatchRequest() throws URISyntaxException {
         ApplicationController app = new MockController();
         Request request = new Request("PATCH", new URI("/"), "HTTP/1.1");
 

@@ -19,7 +19,7 @@ public class DirectoryHandlerTest {
     ApplicationController handler = new DirectoryHandler(config.getPublicDirectory());
 
     @Test
-    public void testReturns200OK() throws URISyntaxException, IOException {
+    public void testReturns200OK() throws URISyntaxException {
         Request request = new Request("GET", new URI("/"), "HTTP/1.1");
 
         Response response = handler.handle(request);
@@ -28,7 +28,7 @@ public class DirectoryHandlerTest {
     }
 
     @Test
-    public void testGetsListOfFilesInDirectory() throws URISyntaxException, IOException {
+    public void testGetsListOfFilesInDirectory() throws URISyntaxException {
         String[] listOfFiles = config.getPublicDirectory().toFile().list();
         Request request = new Request("GET", new URI("/"), "HTTP/1.1");
 
@@ -39,7 +39,7 @@ public class DirectoryHandlerTest {
     }
 
     @Test
-    public void testNestedDirectory() throws IOException, URISyntaxException {
+    public void testNestedDirectory() throws URISyntaxException, IOException {
         Path directory = Files.createTempDirectory(config.getPublicDirectory(), "test_directory");
         directory.toFile().deleteOnExit();
         String [] dirPath = directory.toString().split("/");

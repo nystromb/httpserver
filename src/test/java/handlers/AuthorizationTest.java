@@ -5,7 +5,6 @@ import builders.Response;
 import mocks.MockController;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -16,7 +15,7 @@ public class AuthorizationTest {
     Authorization handler = new Authorization("admin", "hunter2", "secretKey", new MockController());
 
     @Test
-    public void testWithoutAuthorization() throws URISyntaxException, IOException {
+    public void testWithoutAuthorization() throws URISyntaxException {
         Request request = new Request("GET", new URI("/logs"), "HTTP/1.1");
 
         Response response = handler.handle(request);
@@ -26,7 +25,7 @@ public class AuthorizationTest {
     }
 
     @Test
-    public void testWithAuthorization() throws IOException, URISyntaxException {
+    public void testWithAuthorization() throws URISyntaxException {
         Request request = new Request("GET", new URI("/logs"), "HTTP/1.1");
         request.addHeader("Authorization", "Basic YWRtaW46aHVudGVyMg==");
 

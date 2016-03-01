@@ -4,7 +4,6 @@ import builders.Request;
 import builders.Response;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 
 public class DirectoryHandler extends ApplicationController {
@@ -15,7 +14,7 @@ public class DirectoryHandler extends ApplicationController {
     }
 
     @Override
-    protected Response get(Request request) throws IOException {
+    protected Response get(Request request) {
         File directory = new File(publicDirectory.toString(), request.getPath());
         String contents = "<!DOCTYPE html><html><head></head><body><ul>";
         for (String file : directory.list()) {
