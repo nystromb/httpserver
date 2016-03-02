@@ -24,8 +24,6 @@ public class Authorization implements RequestHandler {
 
         return new Response.Builder(401, "Authentication required")
                     .addHeader("WWW-Authenticate", "Basic realm=\"" + challenge + "\"").build();
-
-
     }
 
 }

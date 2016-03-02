@@ -4,9 +4,9 @@ import java.net.URI;
 import java.util.Hashtable;
 
 public class Request {
-    public URI uri;
-    String method, version, body = "";
-    Hashtable<String, String> headers = new Hashtable<>();
+    private URI uri;
+    private String method, version, body = "";
+    private Hashtable<String, String> headers = new Hashtable<>();
 
     public Request(String method, URI uri, String protocol) {
         this.method = method;

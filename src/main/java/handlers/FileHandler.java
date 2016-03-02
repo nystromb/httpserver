@@ -39,6 +39,7 @@ public class FileHandler extends ApplicationHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return response.status(204).build();
     }
 }

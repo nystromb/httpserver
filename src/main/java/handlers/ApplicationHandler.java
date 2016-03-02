@@ -4,63 +4,63 @@ import builders.Request;
 import builders.Response;
 
 public abstract class ApplicationHandler implements RequestHandler {
-    protected Response methodNotAllowed = new Response.Builder(405, "Method Not Allowed").build();
+    private Response response = new Response.Builder(405, "Method Not Allowed").build();
 
     @Override
     public Response handle(Request request) {
 
         switch (request.getMethod()) {
             case "GET":
-                methodNotAllowed = get(request);
+                response = get(request);
                 break;
             case "HEAD":
-                methodNotAllowed = head(request);
+                response = head(request);
                 break;
             case "POST":
-                methodNotAllowed = post(request);
+                response = post(request);
                 break;
             case "PUT":
-                methodNotAllowed = put(request);
+                response = put(request);
                 break;
             case "DELETE":
-                methodNotAllowed = delete(request);
+                response = delete(request);
                 break;
             case "OPTIONS":
-                methodNotAllowed = options(request);
+                response = options(request);
                 break;
             case "PATCH":
-                methodNotAllowed = patch(request);
+                response = patch(request);
                 break;
         }
 
-        return methodNotAllowed;
+        return response;
     }
 
     protected Response get(Request request) {
-        return methodNotAllowed;
+        return response;
     }
 
     protected Response head(Request request) {
-        return methodNotAllowed;
+        return response;
     }
 
     protected Response post(Request request) {
-        return methodNotAllowed;
+        return response;
     }
 
     protected Response put(Request request) {
-        return methodNotAllowed;
+        return response;
     }
 
     protected Response delete(Request request) {
-        return methodNotAllowed;
+        return response;
     }
 
     protected Response options(Request request) {
-        return methodNotAllowed;
+        return response;
     }
 
     protected Response patch(Request request) {
-        return methodNotAllowed;
+        return response;
     }
 }
