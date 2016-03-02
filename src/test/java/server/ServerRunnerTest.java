@@ -4,6 +4,7 @@ import configuration.HTTPConfiguration;
 import handlers.ApplicationHandler;
 import handlers.Authorization;
 import handlers.FileHandler;
+import helpers.SpecHelper;
 import mocks.MockHandler;
 import mocks.MockSocket;
 import org.junit.Before;
@@ -11,9 +12,11 @@ import org.junit.Test;
 import router.Route;
 import router.Router;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 
@@ -21,25 +24,12 @@ import static org.junit.Assert.assertTrue;
 
 public class ServerRunnerTest {
     HTTPConfiguration config = new HTTPConfiguration();
+    SpecHelper testHelper = new SpecHelper();
     OutputStream output;
 
     @Before
     public void setUp() throws IOException {
         output = new ByteArrayOutputStream();
-    }
-
-    private Path createTempFile(String fileName, String ext) throws IOException {
-        if (ext == null)
-            ext = ".txt";
-        Path file = Files.createTempFile(config.getPublicDirectory(), fileName, ext);
-        file.toFile().deleteOnExit();
-        return file;
-    }
-
-    private void writeTo(Path filePath, String contents) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath.toFile()));
-        writer.write(contents);
-        writer.close();
     }
 
     @Test
@@ -108,7 +98,8 @@ public class ServerRunnerTest {
     @Test
     public void testPostsToFileNotAllowed() throws URISyntaxException, IOException {
         Router router = new Router(config.getPublicDirectory(), new HashMap<>());
-        Path file = createTempFile("file1", null);
+        Path file = testHelper.createTempFile(config.getPublicDirectory(), "file1", null);
+//        Path file = createTempFile("file1", null);
         String request = "POST /" + file.toFile().getName().toString() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
@@ -133,8 +124,8 @@ public class ServerRunnerTest {
     @Test
     public void testGetsFileContents() throws URISyntaxException, IOException {
         Router router = new Router(config.getPublicDirectory(), new HashMap<>());
-        Path file = createTempFile("file1", null);
-        writeTo(file, "file1 contents");
+        Path file = testHelper.createTempFile(config.getPublicDirectory(), "file1", null);
+        testHelper.writeTo(file, "file1 contents");
         String request = "GET /" + file.toFile().getName().toString() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
@@ -147,7 +138,7 @@ public class ServerRunnerTest {
     @Test
     public void testGetsPNGContents() throws URISyntaxException, IOException {
         Router router = new Router(config.getPublicDirectory(), new HashMap<>());
-        Path file = createTempFile("image", ".png");
+        Path file = testHelper.createTempFile(config.getPublicDirectory(), "image", ".png");
         String request = "GET /" + file.toFile().getName().toString() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
@@ -159,7 +150,7 @@ public class ServerRunnerTest {
     @Test
     public void testGetsJPEGContents() throws URISyntaxException, IOException {
         Router router = new Router(config.getPublicDirectory(), new HashMap<>());
-        Path file = createTempFile("image", ".jpeg");
+        Path file = testHelper.createTempFile(config.getPublicDirectory(), "image", ".jpeg");
         String request = "GET /" + file.toFile().getName().toString() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
@@ -171,7 +162,7 @@ public class ServerRunnerTest {
     @Test
     public void testGetsGIFContents() throws URISyntaxException, IOException {
         Router router = new Router(config.getPublicDirectory(), new HashMap<>());
-        Path file = createTempFile("image", ".gif");
+        Path file = testHelper.createTempFile(config.getPublicDirectory(), "image", ".gif");
         String request = "GET /" + file.toFile().getName().toString() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
