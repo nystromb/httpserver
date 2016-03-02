@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class DirectoryHandlerTest {
@@ -39,7 +40,7 @@ public class DirectoryHandlerTest {
     }
 
     @Test
-    public void testNestedDirectory() throws URISyntaxException, IOException {
+    public void testNestedDirectoryWithLinks() throws URISyntaxException, IOException {
         Path directory = Files.createTempDirectory(config.getPublicDirectory(), "test_directory");
         directory.toFile().deleteOnExit();
         String [] dirPath = directory.toString().split("/");
@@ -50,5 +51,7 @@ public class DirectoryHandlerTest {
         Response response = new DirectoryHandler(config.getPublicDirectory()).handle(request);
 
         assertTrue(new String(response.getBody()).contains(file.toFile().getName().toString()));
+        assertFalse(new String(response.getBody()).contains("href=\"//"));
+        assertTrue(new String(response.getBody()).contains("/" + dirPath[dirPath.length - 1] + "/" + file.toFile().getName().toString()));
     }
 }
