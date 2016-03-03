@@ -29,6 +29,8 @@ public class FileHandlerTest {
         Response response = handler.handle(request);
 
         assertTrue(response.getStatusLine().contains("200 OK"));
+        assertTrue(response.hasHeader("Content-Length"));
+        assertEquals("14", response.getHeaderValue("Content-Length"));
         assertEquals("file1 contents", new String(response.getBody()));
     }
 
