@@ -19,16 +19,19 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.assertTrue;
 
 public class ServerRunnerTest {
     HTTPConfiguration config = new HTTPConfiguration();
+    Logger logger = Logger.getLogger("server.logs");
     SpecHelper testHelper = new SpecHelper();
     OutputStream output;
 
     @Before
     public void setUp() throws IOException {
+        logger.setUseParentHandlers(false);
         output = new ByteArrayOutputStream();
     }
 
@@ -38,7 +41,7 @@ public class ServerRunnerTest {
         String request = "GET / HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client, router).run();
+        new ServerRunner(client, router, logger).run();
 
         assertTrue(output.toString().contains("200 OK"));
     }
@@ -49,7 +52,7 @@ public class ServerRunnerTest {
         String request = "GET /foobar HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client, router).run();
+        new ServerRunner(client, router, logger).run();
 
         assertTrue(output.toString().contains("404 Not Found"));
     }
@@ -64,7 +67,7 @@ public class ServerRunnerTest {
         String request = "GET /logs HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client, router).run();
+        new ServerRunner(client, router, logger).run();
 
         assertTrue(output.toString().contains("401 Unauthorized"));
     }
@@ -79,7 +82,7 @@ public class ServerRunnerTest {
         String request = "GET /logs HTTP/1.1\r\nAuthorization: Basic YWRtaW46aHVudGVyMg==\r\n\r\n";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client, router).run();
+        new ServerRunner(client, router, logger).run();
 
         assertTrue(output.toString().contains("200 OK"));
     }
@@ -90,7 +93,7 @@ public class ServerRunnerTest {
         String request = "POST / HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client, router).run();
+        new ServerRunner(client, router, logger).run();
 
         assertTrue(output.toString().contains("405 Method Not Allowed"));
     }
@@ -102,7 +105,7 @@ public class ServerRunnerTest {
         String request = "POST /" + file.toFile().getName() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client, router).run();
+        new ServerRunner(client, router, logger).run();
 
         assertTrue(output.toString().contains("405 Method Not Allowed"));
     }
@@ -115,7 +118,7 @@ public class ServerRunnerTest {
         String request = "GET /method_options HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client, router).run();
+        new ServerRunner(client, router, logger).run();
 
         assertTrue(output.toString().contains("200 OK"));
     }
@@ -128,7 +131,7 @@ public class ServerRunnerTest {
         String request = "GET /" + file.toFile().getName() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client, router).run();
+        new ServerRunner(client, router, logger).run();
 
         assertTrue(output.toString().contains("200 OK"));
         assertTrue(output.toString().contains("file1 contents"));
@@ -141,7 +144,7 @@ public class ServerRunnerTest {
         String request = "GET /" + file.toFile().getName() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client, router).run();
+        new ServerRunner(client, router, logger).run();
 
         assertTrue(output.toString().contains("200 OK"));
     }
@@ -153,7 +156,7 @@ public class ServerRunnerTest {
         String request = "GET /" + file.toFile().getName() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client, router).run();
+        new ServerRunner(client, router, logger).run();
 
         assertTrue(output.toString().contains("200 OK"));
     }
@@ -165,7 +168,7 @@ public class ServerRunnerTest {
         String request = "GET /" + file.toFile().getName() + " HTTP/1.1";
         MockSocket client = new MockSocket(new ByteArrayInputStream(request.getBytes()), output);
 
-        new ServerRunner(client, router).run();
+        new ServerRunner(client, router, logger).run();
 
         assertTrue(output.toString().contains("200 OK"));
     }

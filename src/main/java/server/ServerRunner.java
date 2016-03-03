@@ -12,14 +12,18 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServerRunner implements Runnable {
     private Socket client;
     private Router router;
+    private Logger logger;
 
-    public ServerRunner(Socket client, Router router) {
+    public ServerRunner(Socket client, Router router, Logger logger) {
         this.client = client;
         this.router = router;
+        this.logger = logger;
     }
 
     @Override
@@ -29,6 +33,7 @@ public class ServerRunner implements Runnable {
             OutputStream output = client.getOutputStream();
 
             String rawRequest = RequestReader.read(input);
+            logger.log(Level.INFO, rawRequest);
             Request request = RequestParser.process(rawRequest);
 
             Response response = router.handle(request);
