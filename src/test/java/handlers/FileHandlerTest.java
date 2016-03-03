@@ -54,7 +54,7 @@ public class FileHandlerTest {
     public void testRangeHeaderReturns206Code() throws URISyntaxException, IOException {
         Path file = testHelper.createTempFile(config.getPublicDirectory(), "partial_content", null);
         testHelper.writeTo(file, fileContents);
-        Request request = new Request("GET", new URI("/" + file.toFile().getName().toString()), "HTTP/1.1");
+        Request request = new Request("GET", new URI("/" + file.toFile().getName()), "HTTP/1.1");
         request.addHeader("Range", "bytes=0-4");
 
         Response response = handler.handle(request);
@@ -66,7 +66,7 @@ public class FileHandlerTest {
     public void testRangeHeaderReturnsPartialFileContentsRange04() throws URISyntaxException, IOException {
         Path file = testHelper.createTempFile(config.getPublicDirectory(), "partial_content", null);
         testHelper.writeTo(file, fileContents);
-        Request request = new Request("GET", new URI("/" + file.toFile().getName().toString()), "HTTP/1.1");
+        Request request = new Request("GET", new URI("/" + file.toFile().getName()), "HTTP/1.1");
         request.addHeader("Range", "bytes=0-4");
 
         Response response = handler.handle(request);
@@ -78,7 +78,7 @@ public class FileHandlerTest {
     public void testRangeHeaderReturnsPartialFileContentsStart4() throws URISyntaxException, IOException {
         Path file = testHelper.createTempFile(config.getPublicDirectory(), "partial_content", null);
         testHelper.writeTo(file, fileContents);
-        Request request = new Request("GET", new URI("/" + file.toFile().getName().toString()), "HTTP/1.1");
+        Request request = new Request("GET", new URI("/" + file.toFile().getName()), "HTTP/1.1");
         request.addHeader("Range", "bytes=4-");
 
         Response response = handler.handle(request);
@@ -91,7 +91,7 @@ public class FileHandlerTest {
     public void testRangeHeaderReturnsPartialFileContentsEnd6() throws URISyntaxException, IOException {
         Path file = testHelper.createTempFile(config.getPublicDirectory(), "partial_content", null);
         testHelper.writeTo(file, fileContents);
-        Request request = new Request("GET", new URI("/" + file.toFile().getName().toString()), "HTTP/1.1");
+        Request request = new Request("GET", new URI("/" + file.toFile().getName()), "HTTP/1.1");
         request.addHeader("Range", "bytes=-6");
 
         Response response = handler.handle(request);
@@ -102,7 +102,7 @@ public class FileHandlerTest {
     @Test
     public void testPatchContent() throws URISyntaxException, IOException {
         Path file = testHelper.createTempFile(config.getPublicDirectory(), "patched_content", null);
-        Request request = new Request("PATCH", new URI("/" + file.toFile().getName().toString()), "HTTP/1.1");
+        Request request = new Request("PATCH", new URI("/" + file.toFile().getName()), "HTTP/1.1");
         request.setBody("patched content");
         request.addHeader("ETag", "dc50a0d27dda2eee9f65644cd7e4c9cf11de8bec");
 
@@ -111,7 +111,7 @@ public class FileHandlerTest {
         assertTrue(response.getStatusLine().contains("204"));
         assertFalse(new String(response.toByteArray()).contains("patched content"));
 
-        request = new Request("GET", new URI("/" + file.toFile().getName().toString()), "HTTP/1.1");
+        request = new Request("GET", new URI("/" + file.toFile().getName()), "HTTP/1.1");
         response = handler.handle(request);
 
         assertTrue(new String(response.toByteArray()).contains("patched content"));

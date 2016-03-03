@@ -50,8 +50,8 @@ public class DirectoryHandlerTest {
 
         Response response = new DirectoryHandler(config.getPublicDirectory()).handle(request);
 
-        assertTrue(new String(response.getBody()).contains(file.toFile().getName().toString()));
+        assertTrue(new String(response.getBody()).contains(file.toFile().getName()));
         assertFalse(new String(response.getBody()).contains("href=\"//"));
-        assertTrue(new String(response.getBody()).contains("/" + dirPath[dirPath.length - 1] + "/" + file.toFile().getName().toString()));
+        assertTrue(new String(response.getBody()).contains("/" + dirPath[dirPath.length - 1] + "/" + file.toFile().getName()));
     }
 }
