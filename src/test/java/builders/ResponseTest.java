@@ -26,7 +26,7 @@ public class ResponseTest {
 
     @Test
     public void testSettingTheBody() throws IOException {
-        Response response = new Response.Builder(200, "some=data").build();
+        Response response = new Response.Builder(200).setBody("some=data").build();
 
         assertTrue(new String(response.toByteArray()).contains("Content-Length: 9\r\n"));
         assertTrue(new String(response.toByteArray()).contains("some=data"));

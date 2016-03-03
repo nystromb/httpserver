@@ -58,7 +58,7 @@ public class Response {
         public Builder(int code, String body) {
             this.status = code;
             this.body = body.getBytes();
-            headers.put("Content-Length", String.valueOf(this.body.length));
+            setContentLength(body.getBytes());
         }
 
         public Builder(int code) {
@@ -78,7 +78,12 @@ public class Response {
 
         public Builder setBody(String contents) {
             body = contents.getBytes();
+            setContentLength(body);
             return this;
+        }
+
+        private void setContentLength(byte[] body) {
+            headers.put("Content-Length", String.valueOf(body.length));
         }
 
         public Response build() {
