@@ -18,15 +18,15 @@ public class FileHandler extends ApplicationHandler {
 
     @Override
     protected Response get(Request request) {
-        String contents = null;
+        byte[] contents = null;
         try {
-            contents = new String(Files.readAllBytes(Paths.get(publicDirectory.toString() + request.getPath())));
+            contents = Files.readAllBytes(Paths.get(publicDirectory.toString() + request.getPath()));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         if (request.hasHeader("Range")) {
-            return new PartialContentHandler(contents).handle(request);
+            return new PartialContentHandler(new String(contents)).handle(request);
         }
 
         return response.setBody(contents).build();

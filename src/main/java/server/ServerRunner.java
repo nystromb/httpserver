@@ -37,7 +37,7 @@ public class ServerRunner implements Runnable {
             Request request = RequestParser.process(rawRequest);
 
             Response response = router.handle(request);
-
+            logger.log(Level.INFO, new String(response.toByteArray()));
             output.write(response.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();

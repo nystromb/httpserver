@@ -11,7 +11,7 @@ public class Main {
         Logger logger = Logger.getLogger("server.logs");
 
         try {
-            new HttpServer(new HTTPConfiguration(), new HashMap<>(), logger).start();
+            new HttpServer(new HTTPConfiguration(args), new HashMap<>(), logger).start();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -45,7 +45,7 @@ public class Response {
         }
 
         buffer.write("\r\n".getBytes());
-        buffer.write(this.body);
+        buffer.write(body);
 
         return buffer.toByteArray();
     }
@@ -76,9 +76,15 @@ public class Response {
             return this;
         }
 
+        public Builder setBody(byte[] contents) {
+            body = contents;
+            setContentLength(body);
+            return this;
+        }
+
         public Builder setBody(String contents) {
             body = contents.getBytes();
-            setContentLength(body);
+            setContentLength(contents.getBytes());
             return this;
         }
 

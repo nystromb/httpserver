@@ -30,6 +30,6 @@ public class Router {
             return routes.get(request.getPath()).handle(request);
         }
 
-        return new Response.Builder(404).build();
+        return new Response.Builder(404, "Not Found").build();
     }
 }
