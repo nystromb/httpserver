@@ -1,4 +1,5 @@
 import configuration.HTTPConfiguration;
+import router.Route;
 import server.HttpServer;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ public class Main {
         Logger logger = Logger.getLogger("server.logs");
 
         try {
-            new HttpServer(new HTTPConfiguration(args), new HashMap<>(), logger).start();
+            new HttpServer(new HTTPConfiguration(args), new HashMap<String, Route>(), logger).start();
         } catch (IOException e) {
             e.printStackTrace();
         }
